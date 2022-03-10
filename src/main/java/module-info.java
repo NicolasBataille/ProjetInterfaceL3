@@ -3,6 +3,6 @@ module com.example.testjavafx {
     requires javafx.fxml;
 
 
-    opens com.example.testjavafx to javafx.fxml;
-    exports com.example.testjavafx;
+    opens com.example.projetinterface to javafx.fxml;
+    exports com.example.projetinterface;
 }
