@@ -24,12 +24,12 @@ public class Test {
 			//
 			ConfigFileLoader cfl = new ConfigFileLoader();
 			cfl.loadConfigFile("./src/main/resources/config.txt");
-			Config config = cfl.get("F");
+			Config config = cfl.get("F");	//charge le modèle facile
 			System.out.println("Test.main() : "+config);
 			//
 			//TRAIN THE MODEL ...
 			//
-			double epochs = 10000 ;
+			double epochs = 100000 ;
 			HashMap<Integer, Coup> mapTrain = loadCoupsFromFile("./src/main/resources/train_dev_test/train.txt");
 			MultiLayerPerceptron net = learn(9, mapTrain, config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, true, epochs);
 			//
