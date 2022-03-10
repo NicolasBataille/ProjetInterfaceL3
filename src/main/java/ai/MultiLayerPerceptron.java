@@ -6,7 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class MultiLayerPerceptron implements Cloneable, Serializable {
+public class
+MultiLayerPerceptron implements Cloneable, Serializable {
 	
 	public MultiLayerPerceptron(int[] layers, double learningRate, TransferFunction fun){
 		fLearningRate = learningRate;
