@@ -305,7 +305,8 @@ public class Test {
 				layers[i+1] = h ;
 			}
 			layers[layers.length-1] = size ;
-			//
+
+			//Paramètres du training
 			double error = 0.0 ;
 			MultiLayerPerceptron net = new MultiLayerPerceptron(layers, lr, new SigmoidalTransferFunction());
 			double epochs = 1000000000 ;
