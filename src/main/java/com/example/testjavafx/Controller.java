@@ -28,9 +28,6 @@ public class Controller {
 
     public static void testThread(Stage stage) throws Exception{
 
-        System.out.println("zbi");
-
-
         //définit les paramètres d'entraînement de l'IA
         HashMap<Integer, Coup> coups = loadGames("./src/main/resources/dataset/Tic_tac_initial_results.csv");
         saveGames(coups, "./src/main/resources/train_dev_test/", 0.7);

@@ -65,7 +65,7 @@ public class LearningTask extends Task<Double> {
 
                 //update du message donnant la valeur de l'erreur
                 if ( i % 10000 == 0 && verbose){
-                    this.updateMessage("erreur : " + error);
+                    this.updateMessage("erreur : " + (error/(double)i));
                 }
                 //update de la valeur de la progressbar
                 if(i % 1000 == 0){
