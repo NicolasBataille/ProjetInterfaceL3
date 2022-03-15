@@ -1,16 +1,20 @@
 package com.example.testjavafx;
 
-import ai.Coup;
-import ai.MultiLayerPerceptron;
-import ai.SigmoidalTransferFunction;
+import ai.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import static ai.Test.*;
 
 public class Controller {
 
@@ -22,27 +26,90 @@ public class Controller {
 
 
 
+    public static void testThread(Stage stage) throws Exception{
+
+        System.out.println("zbi");
 
 
-    @FXML
-    protected void testThread(){
-        new EventHandler<ActionEvent>(){
+        //définit les paramètres d'entraînement de l'IA
+        HashMap<Integer, Coup> coups = loadGames("./src/main/resources/dataset/Tic_tac_initial_results.csv");
+        saveGames(coups, "./src/main/resources/train_dev_test/", 0.7);
 
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                startButton.setDisable(true);
-                progressBar.setProgress(0.0);
+        ConfigFileLoader cfl = new ConfigFileLoader();
+        cfl.loadConfigFile("./src/main/resources/config.txt");
+        Config config = cfl.get("F");	//charge le modèle facile
+        System.out.println("Test.main() : "+config);
+        double epochs = 100000 ;
+        HashMap<Integer, Coup> mapTrain = loadCoupsFromFile("./src/main/resources/train_dev_test/train.txt");
 
-                learningTask = new LearningTask();
 
-                progressBar.progressProperty().unbind();
-                progressBar.progressProperty().bind(learningTask.progressProperty());
+        Scene scene = stage.getScene();
+        final Label text = (Label) scene.lookup("#testLabel");  //récup le label de test
+        final ProgressBar progressBar = (ProgressBar) scene.lookup("#progressBar");
+        LearningTask learningTask = new LearningTask(9, mapTrain, config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, true, epochs);
 
-                new Thread(learningTask).start();
+        //on gère les bind de la progressbar et du label
+        text.textProperty().unbind();
+        text.textProperty().bind(learningTask.messageProperty());
 
-            }
-        };
+        progressBar.progressProperty().unbind();
+        progressBar.progressProperty().bind(learningTask.progressProperty());
+
+        //lance le training en parallèle
+        new Thread(learningTask).start();
+
     }
+
+
+
+//Test issu de la vidéo tuto de kouakou
+//    @FXML
+//    public void testThread() throws Exception{
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    //Partie qui gère le train de l'IA
+//                    //.....
+//                    //
+//
+//                    //permet d'effectuer des actions sur le JavaFX thread (donc modifier la progress bar par exemple)
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }).start();
+//    }
+
+
+
+
+//    @FXML
+//    protected void testThread(){
+//        new EventHandler<ActionEvent>(){
+//
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                startButton.setDisable(true);
+//                progressBar.setProgress(0.0);
+//
+//                learningTask = new LearningTask();
+//
+//                progressBar.progressProperty().unbind();
+//                progressBar.progressProperty().bind(learningTask.progressProperty());
+//
+//                new Thread(learningTask).start();
+//
+//            }
+//        };
+//    }
 
 
 

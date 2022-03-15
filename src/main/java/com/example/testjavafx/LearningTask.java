@@ -9,7 +9,27 @@ import java.util.HashMap;
 
 public class LearningTask extends Task<Double> {
 
-    protected void call(int size, HashMap<Integer, Coup> mapTrain, int h, double lr, int l, boolean verbose, double epochs) throws Exception {
+    //attributs nécessaires pour l'entrainement de l'IA
+    private int size;
+    private HashMap<Integer, Coup> mapTrain;
+    private int h;
+    private double lr;
+    private int l;
+    private boolean verbose;
+    private double epochs;
+
+
+    public LearningTask(int size, HashMap<Integer, Coup> mapTrain, int h, double lr, int l, boolean verbose, double epochs){
+        this.size = size;
+        this.mapTrain = mapTrain;
+        this.h = h;
+        this.lr = lr;
+        this.l = l;
+        this.verbose = verbose;
+        this. epochs = epochs;
+    }
+
+    protected Double call() throws Exception {
         try {
 
             if ( verbose ) {
@@ -43,11 +63,20 @@ public class LearningTask extends Task<Double> {
 
                 error += net.backPropagate(c.in, c.out);
 
-                if ( i % 10000 == 0 && verbose) System.out.println("Error at step "+i+" is "+ (error/(double)i));
+                //update du message donnant la valeur de l'erreur
+                if ( i % 10000 == 0 && verbose){
+                    this.updateMessage("erreur : " + error);
+                }
+                //update de la valeur de la progressbar
+                if(i % 1000 == 0){
+                    this.updateProgress(i, epochs);
+                }
             }
-            if ( verbose )
-                System.out.println("Learning completed!");
+            if ( verbose ){
+                this.updateMessage("Fin du train !");
+            }
 
+            return error;
 
         }
         catch (Exception e) {
@@ -56,16 +85,17 @@ public class LearningTask extends Task<Double> {
             System.exit(-1);
         }
 
-
-
+        return null;
     }
 
-    @Override
-    protected Double call() throws Exception {
-        for(int i = 0; i<100; i++){
-            this.updateProgress(i, i);
-        }
 
-        return 0.0;
-    }
+//méthode de test de la task
+//    @Override
+//    protected Double call() throws Exception {
+//        for(int i = 0; i<100; i++){
+//            this.updateProgress(i, i);
+//        }
+//
+//        return 0.0;
+//    }
 }
