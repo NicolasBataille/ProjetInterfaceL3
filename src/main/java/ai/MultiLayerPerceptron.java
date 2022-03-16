@@ -81,10 +81,12 @@ MultiLayerPerceptron implements Cloneable, Serializable {
 		try{
 			FileOutputStream fout = new FileOutputStream(path);
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
+			System.out.println("save");
 			oos.writeObject(this);
 			oos.close();
 		}
-		catch (Exception e) { 
+		catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
