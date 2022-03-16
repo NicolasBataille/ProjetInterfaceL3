@@ -1,4 +1,4 @@
-package com.example.testjavafx;
+package com.example.projetinterface;
 
 import ai.Coup;
 import ai.MultiLayerPerceptron;
@@ -37,8 +37,6 @@ public class LearningTask extends Task<Double> {
                 System.out.println("START TRAINING ...");
                 System.out.println();
             }
-            //
-            //			int[] layers = new int[]{ size, 128, 128, size };
             int[] layers = new int[l+2];
             layers[0] = size ;
             for (int i = 0; i < l; i++) {
@@ -76,6 +74,13 @@ public class LearningTask extends Task<Double> {
                 this.updateMessage("Fin du train !");
             }
 
+            if(net.save("src/main/resources/models/F.srl")){
+                System.out.println("good");
+            }
+            else{
+                System.out.println("aps good");
+            }
+            System.out.println(error);
             return error;
 
         }
@@ -89,13 +94,4 @@ public class LearningTask extends Task<Double> {
     }
 
 
-//méthode de test de la task
-//    @Override
-//    protected Double call() throws Exception {
-//        for(int i = 0; i<100; i++){
-//            this.updateProgress(i, i);
-//        }
-//
-//        return 0.0;
-//    }
 }

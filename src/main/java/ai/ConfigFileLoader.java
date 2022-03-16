@@ -10,7 +10,7 @@ public class ConfigFileLoader {
 
 	/**
 	 * Config File format: level:hiddenLayerSize:learningRate:numberOfhiddenLayers
-	 * @param f
+	 * @param name
 	 */
 	public void loadConfigFile(String name) {
 		try {
